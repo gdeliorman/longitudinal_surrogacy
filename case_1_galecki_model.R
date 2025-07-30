@@ -1,3 +1,5 @@
+#Setting 1: BPRS as a Surrogate for PANSS
+##Galecki's model
 library(Surrogate)
 
 ##SAS output:
