@@ -1,6 +1,7 @@
 #Setting 1: BPRS as a Surrogate for PANSS
 ##Galecki's model
 library(Surrogate)
+library(matrixcalc)
 
 ##SAS output:
 var_joint<- matrix(c(156.39, NA,245.3, NA,
