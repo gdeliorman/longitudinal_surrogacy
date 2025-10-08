@@ -4,7 +4,7 @@
 library(Surrogate)
 library(matrixcalc)
 
-###cgi as true endpoint in setting 4
+###SAS output
 Sigma<- matrix(c(0.03685 , NA,0.02377 ,NA,
                  NA,0.04968 , NA, 0.03410,
                  0.02377, NA,0.04581 , NA,
@@ -12,6 +12,8 @@ Sigma<- matrix(c(0.03685 , NA,0.02377 ,NA,
 
 ##estimable corr
 corr<- cov2cor(Sigma)
+
+###SAS output
 D_matrix<- matrix(c( 0.03301, NA, 0.02131,NA,
                      NA, 0.02588, NA, 0.02289,
                      0.02131, NA,0.02801 , NA,
@@ -48,7 +50,6 @@ r<-as.matrix(ar1_cor(6, AR), nrow=6, ncol=6)
 p1 <- matrix(c(1,1,1,1,1,1), nrow=1, ncol=6)
 
 
-
 #RH_square<- data.frame()
 for (i in 1:length(rho_delta_1)) {
   for (j in 1:length(rho_delta_2)) {
@@ -80,6 +81,15 @@ for (i in 1:length(rho_delta_1)) {
     D_1<- Q%*% D_matrix %*% t(Q)
     D_1<- round(D_1, digits = 6)
     
+    
+    #closed form code
+    rh_square_first<- ( 1 - (sigma_u[1,2]^2 / (sigma_u[1,1] * sigma_u[2,2])) )
+    rh_square_second <- 1 - ((sigma_u[1,2] + alpha * D_1[1,2])^2 /
+                            ((sigma_u[1,1] + alpha * D_1[1,1]) *
+                            (sigma_u[2,2] + alpha * D_1[2,2])))
+    rh_square<- 1-rh_square_first^(p-1)*rh_square_second
+    
+    ##second way to find D_1
     #D_1<- sigma_d <- matrix (c((D_matrix[1,1])+(D_matrix[2,2]) - 2*cov_d_T0T1,
     # (D_matrix[1,3])+(D_matrix[2,4])- cov_d_T1S0-cov_d_T0S1,
     # (D_matrix[1,3])+(D_matrix[2,4])- cov_d_T1S0-cov_d_T0S1,
